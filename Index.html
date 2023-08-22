@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicação de Cálculo de Impostos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        select {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Aplicação de Cálculo de Impostos</h1>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" placeholder="Digite o nome">
+
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" placeholder="Digite o endereço">
+
+        <label for="tipo">Tipo de Cliente:</label>
+        <select id="tipo">
+            <option value="individual">Pessoa Física</option>
+            <option value="legal-entity">Pessoa Jurídica</option>
+        </select>
+
+        <div id="campos-individual">
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" placeholder="Digite o CPF">
+
+            <label for="rg">RG:</label>
+            <input type="text" id="rg" placeholder="Digite o RG">
+        </div>
+
+        <div id="campos-juridica">
+            <label for="cnpj">CNPJ:</label>
+            <input type="text" id="cnpj" placeholder="Digite o CNPJ">
+
+            <label for="ie">IE:</label>
+            <input type="text" id="ie" placeholder="Digite a IE">
+        </div>
+
+        <label for="compra">Valor da Compra:</label>
+        <input type="text" id="compra" placeholder="Digite o valor da compra">
+
+        <button id="calcular">Calcular</button>
+
+        <div id="resultado" style="display: none;">
+            <h2>Resultado</h2>
+            <p><strong>Nome:</strong> <span id="resultado-nome"></span></p>
+            <p><strong>Endereço:</strong> <span id="resultado-endereco"></span></p>
+            <p><strong>Valor do Imposto:</strong> <span id="resultado-imposto"></span></p>
+            <p><strong>Valor Total:</strong> <span id="resultado-total"></span></p>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        const botaoCalcular = document.getElementById('calcular');
+        const secaoResultado = document.getElementById('resultado');
+        const resultadoNome = document.getElementById('resultado-nome');
+        const resultadoEndereco = document.getElementById('resultado-endereco');
+        const resultadoImposto = document.getElementById('resultado-imposto');
+        const resultadoTotal = document.getElementById('resultado-total');
+        const tipoSelect = document.getElementById('tipo');
+        const camposIndividual = document.getElementById('campos-individual');
+        const camposJuridica = document.getElementById('campos-juridica');
+
+        tipoSelect.addEventListener('change', () => {
+            if (tipoSelect.value === 'individual') {
+                camposIndividual.style.display = 'block';
+                camposJuridica.style.display = 'none';
+            } else if (tipoSelect.value === 'legal-entity') {
+                camposIndividual.style.display = 'none';
+                camposJuridica.style.display = 'block';
+            }
+        });
+
+        botaoCalcular.addEventListener('click', () => {
+            const nome = document.getElementById('nome').value;
+            const endereco = document.getElementById('endereco').value;
+            const valorCompra = parseFloat(document.getElementById('compra').value);
+            let taxaImposto = 0.1; // Taxa de imposto padrão para pessoas físicas
+
+            if (tipoSelect.value === 'legal-entity') {
+                taxaImposto = 0.2; // Taxa de imposto para pessoas jurídicas
+            }
+
+            const valorImposto = valorCompra * taxaImposto;
+            const valorTotal = valorCompra + valorImposto;
+
+            resultadoNome.textContent = nome;
+            resultadoEndereco.textContent = endereco;
+            resultadoImposto.textContent = valorImposto.toFixed(2);
+            resultadoTotal.textContent = valorTotal.toFixed(2);
+
+            secaoResultado.style.display = 'block';
+        });
+    </script>
+</body>
+
+</html>
